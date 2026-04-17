@@ -21,7 +21,7 @@ jobs:
         run: |
           pip install -r requirements.txt
           # Команда 'yes' будет бесконечно слать 'y' в процесс сборки
-          yes | flet build apk --project --release "NetProfileScan" --org "com.zaruzhnikov.netprofile"
+          yes | flet build apk --project "NetProfileScan" --org "com.zaruzhnikov.netprofile"
           
       - name: Upload Artifact
         uses: actions/upload-artifact@v4 # ВОТ ТУТ ГЛАВНОЕ ИСПРАВЛЕНИЕ
