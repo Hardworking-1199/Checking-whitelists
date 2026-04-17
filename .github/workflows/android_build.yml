@@ -1,0 +1,31 @@
+name: Build Android APK
+on:
+  push:
+    branches: [ main ] # Сборка начнется, когда ты зальешь файлы
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install Dependencies
+        run: |
+          pip install flet
+          pip install -r requirements.txt
+
+      - name: Build APK
+        run: |
+          # Собираем проект. Указываем путь к иконке png
+          flet build apk --project "NetProfileScan" --org "com.netprofile.app" --icon assets/icon.png
+
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: netprofile-apk
+          path: build/apk/*.apk
