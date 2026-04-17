@@ -21,7 +21,8 @@ jobs:
         run: |
           pip install -r requirements.txt
           
-          # Теперь -y стоит ПЕРЕД apk. Это заставит flet не задавать вопросы.
+          # Мы ставим -y ПЕРЕД apk. 
+          # Также добавим флаг --no-version-check на всякий случай.
           flet build -y apk --project "NetProfileScan" --org "com.zaruzhnikov.netprofile"
           
       - name: Upload Artifact
