@@ -19,12 +19,10 @@ jobs:
 
       - name: Build APK
         run: |
-          # Устанавливаем зависимости из твоего файла, чтобы сборщик их видел
           pip install -r requirements.txt
           
-          # Упрощенная команда сборки. 
-          # Flet сам найдет иконку в assets/icon.png, если она там лежит.
-          flet build apk --project "NetProfileScan" --org "com.zaruzhnikov.netprofile"
+          # Мы добавляем -y, чтобы сборщик автоматически соглашался на установку SDK
+          flet build apk --project "NetProfileScan" --org "com.zaruzhnikov.netprofile" -y
           
       - name: Upload Artifact
         uses: actions/upload-artifact@v4 # ВОТ ТУТ ГЛАВНОЕ ИСПРАВЛЕНИЕ
