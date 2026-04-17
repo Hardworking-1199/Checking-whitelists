@@ -21,8 +21,8 @@ jobs:
         run: |
           pip install -r requirements.txt
           
-          # Мы добавляем -y, чтобы сборщик автоматически соглашался на установку SDK
-          flet build apk --project "NetProfileScan" --org "com.zaruzhnikov.netprofile" -y
+          # Теперь -y стоит ПЕРЕД apk. Это заставит flet не задавать вопросы.
+          flet build -y apk --project "NetProfileScan" --org "com.zaruzhnikov.netprofile"
           
       - name: Upload Artifact
         uses: actions/upload-artifact@v4 # ВОТ ТУТ ГЛАВНОЕ ИСПРАВЛЕНИЕ
