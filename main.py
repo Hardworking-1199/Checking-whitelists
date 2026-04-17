@@ -5,6 +5,7 @@ import os
 import flet as ft
 from loguru import logger
 
+os.environ["FLET_RENDER_VIA_SKIA"] = "1"
 try:
     if os.name == 'nt':
         import ctypes
