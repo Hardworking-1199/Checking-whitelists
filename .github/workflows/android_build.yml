@@ -1,31 +1,28 @@
 name: Build Android APK
 on:
   push:
-    branches: [ main ] # Сборка начнется, когда ты зальешь файлы
+    branches: [ main ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4 # Обновили до v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5 # Обновили до v5 (актуальная)
         with:
           python-version: '3.10'
 
-      - name: Install Dependencies
-        run: |
-          pip install flet
-          pip install -r requirements.txt
+      - name: Install SDK
+        run: pip install flet
 
       - name: Build APK
         run: |
-          # Собираем проект. Указываем путь к иконке png
-          flet build apk --project "NetProfileScan" --org "com.netprofile.app" --icon assets/icon.png
+          flet build apk --project "NetProfileScan" --org "com.zaruzhnikov.netprofile" --icon assets/icon.png
 
-      - name: Upload APK Artifact
-        uses: actions/upload-artifact@v3
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4 # ВОТ ТУТ ГЛАВНОЕ ИСПРАВЛЕНИЕ
         with:
-          name: netprofile-apk
+          name: app-release
           path: build/apk/*.apk
