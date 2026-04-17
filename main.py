@@ -881,14 +881,28 @@ class NetProfileApp:
            margin=ft.margin.only(bottom=5)
        )    
     
-def main(page: ft.Page):
-    NetProfileApp(page)
+async def main(page: ft.Page):
+    # 1. Базовая настройка (минимализм)
+    page.theme_mode = ft.ThemeMode.DARK
+    page.window_visible = True # Явно просим показать окно
     
-    # Настройки окна применяются здесь, для конкретной сессии
-    page.title = "NetProfile: Deep Scan"
-    page.window_width = 420
-    page.window_height = 850
-    page.window_resizable = False
+    # 2. Показываем заглушку сразу
+    loading_text = ft.Text("Загрузка DeepScan...")
+    page.add(loading_text)
+    page.update()
+
+    # 3. Делаем небольшую паузу, чтобы Android "прожевал" графику
+    import asyncio
+    await asyncio.sleep(1)
+
+    try:
+        # Здесь твой основной код добавления кнопок и логов
+        page.controls.remove(loading_text)
+        page.add(ft.Text("Система готова!"))
+        # ... твой UI ...
+    except Exception as e:
+        page.add(ft.Text(f"Ошибка: {e}", color="red"))
+    
     page.update()
 
 if __name__ == "__main__":
