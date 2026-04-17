@@ -20,10 +20,8 @@ jobs:
       - name: Build APK
         run: |
           pip install -r requirements.txt
-          
-          # Мы ставим -y ПЕРЕД apk. 
-          # Также добавим флаг --no-version-check на всякий случай.
-          flet build -y apk --project "NetProfileScan" --org "com.zaruzhnikov.netprofile"
+          # Команда 'yes' будет бесконечно слать 'y' в процесс сборки
+          yes | flet build apk --project "NetProfileScan" --org "com.zaruzhnikov.netprofile"
           
       - name: Upload Artifact
         uses: actions/upload-artifact@v4 # ВОТ ТУТ ГЛАВНОЕ ИСПРАВЛЕНИЕ
