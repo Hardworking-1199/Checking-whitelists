@@ -882,29 +882,37 @@ class NetProfileApp:
        )    
     
 async def main(page: ft.Page):
-    # 1. Базовая настройка (минимализм)
+    # Упрощаем настройки страницы до минимума
     page.theme_mode = ft.ThemeMode.DARK
-    page.window_visible = True # Явно просим показать окно
+    page.padding = 10
     
-    # 2. Показываем заглушку сразу
-    loading_text = ft.Text("Загрузка DeepScan...")
-    page.add(loading_text)
+    # Создаем контейнер для логов БЕЗ сложных рамок и теней
+    log_column = ft.Column(scroll=ft.ScrollMode.ALWAYS, expand=True)
+    
+    def log_message(msg, color=ft.colors.WHITE):
+        log_column.controls.append(ft.Text(msg, color=color, size=12))
+        page.update()
+
+    # Сначала добавляем пустой экран
+    page.add(ft.Text("Инициализация графики...", size=20))
+    page.update()
+    
+    # Ждем 2 секунды, чтобы видеочип Mali успел "проснуться"
+    await asyncio.sleep(2)
+    
+    page.clean()
+    page.add(
+        ft.Text("DeepScan Debug Mode", size=24, weight="bold"),
+        ft.Divider(),
+        ft.Container(
+            content=log_column,
+            height=400,
+            border=ft.border.all(1, ft.colors.GREY_800), # Максимально простая рамка
+        )
+    )
+    
+    log_message("Система инициализирована")
+    log_message("Графический движок: Skia (Force)")
     page.update()
 
-    # 3. Делаем небольшую паузу, чтобы Android "прожевал" графику
-    import asyncio
-    await asyncio.sleep(1)
-
-    try:
-        # Здесь твой основной код добавления кнопок и логов
-        page.controls.remove(loading_text)
-        page.add(ft.Text("Система готова!"))
-        # ... твой UI ...
-    except Exception as e:
-        page.add(ft.Text(f"Ошибка: {e}", color="red"))
-    
-    page.update()
-
-if __name__ == "__main__":
-    # Вызываем приложение без лишних параметров
-    ft.app(target=main)
+ft.app(target=main)
